@@ -1,66 +1,39 @@
-const gameGrid = document.getElementById('game-grid');
+const grid = document.getElementById('game-grid');
 const searchInput = document.getElementById('search');
+const API = 'https://www.freetogame.com/api/games';
 
-// RAWG API base
-const RAWG_API = 'https://api.rawg.io/api/games';
-// **You can get a free key from RAWG.io and append &key=YOUR_KEY to improve rate limits**
-// But it's optional for small demo
-
-// Fetch popular games on load
-async function loadPopularGames() {
-  try {
-    const res = await fetch(`${RAWG_API}?page_size=20&ordering=-rating`);
-    const data = await res.json();
-
-    renderGames(data.results);
-  } catch (e) {
-    console.error('Failed to fetch popular games:', e);
-    gameGrid.innerHTML = '<p>Failed to load games. Try refreshing.</p>';
-  }
-}
-
-function renderGames(games) {
-  gameGrid.innerHTML = '';
-  if (!games.length) {
-    gameGrid.innerHTML = '<p>No games found.</p>';
-    return;
-  }
-
-  games.forEach(game => {
+function renderGames(list) {
+  grid.innerHTML = '';
+  list.forEach(g => {
     const card = document.createElement('div');
     card.className = 'game-card';
     card.innerHTML = `
-      <img src="${game.background_image || 'https://via.placeholder.com/300x200?text=No+Image'}" alt="${game.name}" />
-      <h3>${game.name}</h3>
-    `;
-
+      <img src="${g.thumbnail}" alt="${g.title}">
+      <h3>${g.title}</h3>`;
     card.onclick = () => {
-      // Open game page with name query param
-      window.location.href = `game.html?name=${encodeURIComponent(game.name)}`;
+      location.href = `game.html?name=${encodeURIComponent(g.title)}`;
     };
-
-    gameGrid.appendChild(card);
+    grid.appendChild(card);
   });
 }
 
-async function searchGames(term) {
-  if (!term) {
-    return loadPopularGames();
-  }
+async function loadList() {
   try {
-    const res = await fetch(`${RAWG_API}?search=${encodeURIComponent(term)}&page_size=20`);
+    const res = await fetch(API);
+    if (!res.ok) throw new Error(res.status);
     const data = await res.json();
-    renderGames(data.results);
+    renderGames(data);
   } catch (e) {
-    console.error('Failed to search games:', e);
-    gameGrid.innerHTML = '<p>Error searching games.</p>';
+    console.error(e);
+    grid.innerHTML = '<p>Unable to load games. Please refresh.</p>';
   }
 }
 
 searchInput.addEventListener('input', e => {
-  const term = e.target.value.trim();
-  searchGames(term);
+  const term = e.target.value.toLowerCase();
+  Array.from(document.querySelectorAll('.game-card')).forEach(c => {
+    c.style.display = c.querySelector('h3').textContent.toLowerCase().includes(term) ? '' : 'none';
+  });
 });
 
-// Initial load
-loadPopularGames();
+loadList();
