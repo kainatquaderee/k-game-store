@@ -1,0 +1,104 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #121212;
+  color: #eee;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #1f1f1f;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+#search {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  width: 70%;
+  max-width: 500px;
+  border-radius: 6px;
+  border: none;
+  font-size: 1rem;
+}
+
+#game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.game-card {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.game-card:hover {
+  background-color: #2a2a2a;
+}
+
+.game-card img {
+  width: 100%;
+  display: block;
+}
+
+.game-card h3 {
+  margin: 0.5rem;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+#game-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+#cover {
+  width: 100%;
+  max-width: 400px;
+  display: block;
+  margin: 1rem auto;
+  border-radius: 10px;
+}
+
+#torrent-results {
+  margin-top: 2rem;
+}
+
+#torrents-list {
+  list-style: none;
+  padding: 0;
+}
+
+#torrents-list li {
+  margin-bottom: 1rem;
+  background: #2c2c2c;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+}
+
+#torrents-list a {
+  color: #5cb85c;
+  text-decoration: none;
+}
+
+#torrents-list a:hover {
+  text-decoration: underline;
+}
+
+.support-msg {
+  margin-top: 2rem;
+  font-style: italic;
+  color: #aaa;
+  text-align: center;
+}
